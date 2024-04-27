@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="chat">
+    <div>
+      <button (click)="onStartConversation()">
+        <mat-icon aria-hidden="false" fontIcon="add"></mat-icon>
+      </button>
+    </div>
+      @for (conversation of conversations;  track conversation; let index = $index) {
+        <div class="chat-element" (click)="onChangeSelectedConversation(index, conversation.id)" [ngClass]="index === activeConversationIndex ? 'active-conversation' : '' ">
+          <img src="{{conversation?.picture}}"/>
+          <div class="contact">
+            <div class="contact-name">{{conversation.name}}</div>
+            <div class="contact-message">
+              @if (conversation.chatlog[conversation.chatlog.length -1]?.sender === senderEnum.SENDER) {
+                <span>You: </span>
+                }{{conversation.chatlog[conversation.chatlog.length -1]?.text}}</div>
+          </div>
+        </div>
+      }
+      <div class="empty-chat" *ngIf="conversations.length === 0">
+        You have no chat yet
+      </div>
+  </div>
+  <div class="conversation">
+    <div class="conversation-header" *ngIf="conversationSelected">
+      <img src="{{conversationSelected?.picture}}" (click)="onOpenUserDetailsDialog()"/>
+      <span>{{conversationSelected?.name}}</span>
+      <button (click)="onDeleteConversation()">
+        <mat-icon aria-hidden="false" fontIcon="delete"></mat-icon></button>
+    </div>
+    <div id="content" class="conversation-content" *ngIf="conversationSelected; else noChatSelected">
+      @for (message of conversationSelected?.chatlog;  track message; let index = $index) {
+        <div class="message-element" [ngClass]="message?.sender === senderEnum.RECEIVER ? 'message-received' : 'message-sent' ">
+            <p class="message-content" [ngClass]="message?.sender === senderEnum.RECEIVER ? 'message-content-received' : 'message-content-sent' ">{{message.text}}</p>
+            <p class="message-timestamp">{{message?.timestamp}}</p>
+        </div>
+      }
+    </div>
+    <ng-template  #noChatSelected>
+      <div class="empty-chat">
+        <p> No chat selected</p>
+      </div>
+    </ng-template>
+    <div class="conversation-footer" *ngIf="conversationSelected">
+    <input placeholder="Type your message" [(ngModel)]="messageInput"/>
+    <button (click)="onSubmitNewMessage(messageInput)">
+      <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="send"></mat-icon></button>
+    </div>
+  </div>
+  </div>

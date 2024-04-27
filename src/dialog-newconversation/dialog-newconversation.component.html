@@ -1,0 +1,7 @@
+
+    <div class="dialog-container">
+        <div class="user" *ngFor="let user of users; let index = index" (click)="onCloseDialog(index)">
+            <img src={{user.picture}} />
+            <p>{{user.name}}</p>
+        </div>
+    </div>

@@ -1,0 +1,12 @@
+.dialog-container{
+    width: 10rem;
+    padding: 0.5rem;
+    .user{
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        img{
+            width: 4rem;
+        }
+    }
+}
